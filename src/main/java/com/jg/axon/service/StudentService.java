@@ -48,7 +48,7 @@ public class StudentService {
     }
 
     public Student getStudentById(final UUID studentId) {
-        return queryGateway.query(new FindStudentsQuery(), ResponseTypes.multipleInstancesOf(Student.class))
+        return queryGateway.query(new FindStudentsQuery(studentId, null, null, null), ResponseTypes.multipleInstancesOf(Student.class))
                 .join()
                 .stream()
                 .findFirst()

@@ -1,5 +1,6 @@
 package com.jg.axon.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
@@ -13,6 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = { "students" })
+@ToString(exclude = { "students" })
+@JsonIgnoreProperties(value = { "students" })
 public class Subject {
 
     @Id
