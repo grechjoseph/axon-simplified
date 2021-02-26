@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driverclassname: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test_axon
+    username: root
+    password: root
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      # create table if no exist.
+      ddl-auto: update
