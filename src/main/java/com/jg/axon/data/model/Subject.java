@@ -1,9 +1,7 @@
 package com.jg.axon.data.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -14,9 +12,11 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = { "students" })
 public class Subject {
 
     @Id
+    @Type(type = "uuid-char")
     private UUID id;
 
     private String subjectName;

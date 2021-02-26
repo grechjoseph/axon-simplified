@@ -32,24 +32,12 @@ public class StudentAggregate {
 
     @CommandHandler
     public StudentAggregate(final CreateStudentCommand command) {
-        this.id = UUID.randomUUID();
-        this.firstName = command.getFirstName();
-        this.lastName = command.getLastName();
-        this.subjectIds = command.getSubjectIds();
-
         AggregateLifecycle.apply(StudentCreatedEvent.builder()
-                .id(this.id)
-                .firstName(this.firstName)
-                .lastName(this.lastName)
-                .subjectIds(this.subjectIds)
+                .id(UUID.randomUUID())
+                .firstName(command.getFirstName())
+                .lastName(command.getLastName())
+                .subjectIds(command.getSubjectIds())
                 .build());
-    }
-
-    @EventSourcingHandler
-    public void on(final StudentCreatedEvent event) {
-        this.firstName = event.getFirstName();
-        this.lastName = event.getLastName();
-        this.subjectIds = event.getSubjectIds();
     }
 
     // Update
@@ -65,13 +53,6 @@ public class StudentAggregate {
                 .build());
     }
 
-    @EventSourcingHandler
-    public void on(final StudentUpdatedEvent event) {
-        this.firstName = event.getFirstName();
-        this.lastName = event.getLastName();
-        this.subjectIds = event.getSubjectIds();
-    }
-
     // Delete
 
     @CommandHandler
@@ -79,6 +60,21 @@ public class StudentAggregate {
         AggregateLifecycle.apply(StudentDeletedEvent.builder()
                 .id(command.getId())
                 .build());
+    }
+
+    @EventSourcingHandler
+    public void on(final StudentCreatedEvent event) {
+        this.id = event.getId();
+        this.firstName = event.getFirstName();
+        this.lastName = event.getLastName();
+        this.subjectIds = event.getSubjectIds();
+    }
+
+    @EventSourcingHandler
+    public void on(final StudentUpdatedEvent event) {
+        this.firstName = event.getFirstName();
+        this.lastName = event.getLastName();
+        this.subjectIds = event.getSubjectIds();
     }
 
     @EventSourcingHandler

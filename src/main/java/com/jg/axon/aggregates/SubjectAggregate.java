@@ -29,18 +29,10 @@ public class SubjectAggregate {
 
     @CommandHandler
     public SubjectAggregate(final CreateSubjectCommand command) {
-        this.id = UUID.randomUUID();
-        this.subjectName = command.getSubjectName();
-
         AggregateLifecycle.apply(SubjectCreatedEvent.builder()
-                .id(this.id)
+                .id(UUID.randomUUID())
                 .subjectName(command.getSubjectName())
                 .build());
-    }
-
-    @EventSourcingHandler
-    public void on(final SubjectCreatedEvent event) {
-        this.subjectName = event.getSubjectName();
     }
 
     // Update
@@ -54,11 +46,6 @@ public class SubjectAggregate {
                 .build());
     }
 
-    @EventSourcingHandler
-    public void on(final SubjectUpdatedEvent event) {
-        this.subjectName = event.getSubjectName();
-    }
-
     // Delete
 
     @CommandHandler
@@ -69,7 +56,19 @@ public class SubjectAggregate {
     }
 
     @EventSourcingHandler
-    public void on(final SubjectDeletedEvent event) {
+    public void on(final SubjectCreatedEvent event) {
+        this.id = event.getId();
+        this.subjectName = event.getSubjectName();
+    }
 
+    @EventSourcingHandler
+    public void on(final SubjectUpdatedEvent event) {
+        this.id = event.getId();
+        this.subjectName = event.getSubjectName();
+    }
+
+    @EventSourcingHandler
+    public void on(final SubjectDeletedEvent event) {
+        this.id = event.getId();
     }
 }
